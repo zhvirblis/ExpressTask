@@ -22,9 +22,11 @@ app.get('/', function (req, res, next) {
 });
 
 // webpack
-app.use(webpackMiddleware(webpack(webpackConfig),{
-  noInfo: false
-}));
+if(config.expressMiddleWare){
+  app.use(webpackMiddleware(webpack(webpackConfig),{
+    noInfo: false
+  }));
+}
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
