@@ -7,12 +7,18 @@ var bodyParser = require('body-parser');
 
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
+var expressMongoDb = require('express-mongo-db');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var webpackMiddleware = require("webpack-dev-middleware");
 var app = express();
 
+app.use(expressMongoDb('mongodb://localhost/test'));
+
+app.get('/', function (req, res, next) {
+  console.log(req.db)
+  next()
+});
 
 // webpack
 app.use(webpackMiddleware(webpack(webpackConfig),{
@@ -32,7 +38,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
