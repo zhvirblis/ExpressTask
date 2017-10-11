@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send('Hello world!');
+router.get('/testproxy', function(req, res, next) {
+  res.send('Test Done!');
 });
 
 module.exports = router;

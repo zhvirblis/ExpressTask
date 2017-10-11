@@ -4,16 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('./app.config.js');
 
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 var expressMongoDb = require('express-mongo-db');
 
-var index = require('./routes/index');
+var testProxy = require('./routes/test');
 var webpackMiddleware = require("webpack-dev-middleware");
 var app = express();
 
-app.use(expressMongoDb('mongodb://localhost/test'));
+app.use(expressMongoDb(config.db));
 
 app.get('/', function (req, res, next) {
   console.log(req.db)
@@ -33,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist')));
 
-/* app.use('/', index); */
+app.use('/api', testProxy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,7 +51,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send(`Error ${err.status}:${err.message}`);
 });
 
 module.exports = app;

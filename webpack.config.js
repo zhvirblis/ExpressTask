@@ -11,7 +11,7 @@ module.exports = {
     entry: './src/style.less',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, '/dist')
+        path: path.resolve(__dirname, 'dist')
     },
     module: {
         rules: [{
@@ -28,5 +28,12 @@ module.exports = {
     },
     plugins: [
         extractLess
-    ]
+    ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        port: 9000,
+        proxy: {
+            "/api": "http://localhost:3000"
+        }
+    }
 }
